@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    vertical-align: baseline;
+  }
+
+.div{
+  display: flex;
+  flex-direction:row;
+}
+/*__________________ BOTONES ___________________*/
+.BTN_acceso {
+  padding: 20px;
+  margin: 10px;
+}
+.BTN_acceso:hover{
+  background: aquamarine;
+}
+
+.BTN{
+  padding: 20px;
+  margin: 30px;
+}
+.BTN:hover{
+  background: blue;
+  padding: 30px;
+}
+
+.selec_edif{
+  padding: 15px;
+  margin: 5px;
+}
+.selec_edif:hover{
+  background: rgb(230, 230, 72);
+}
+
+.selec_entrada{
+  padding: 15px;
+  margin: 5px;
+}
+.selec_entrada:hover{
+  background: rgb(230, 230, 72);
+}
+
+/*__________________________________________--*/
+ /* Estilo para el contenedor flexible */
+ .contenedor-flexible {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/*_______________________________________________*/
+/* Estilo para mostrar y ocultar las tabla */
+.tabla {
+  display: none;
+}
+
+.tabla-visible {
+  display: table;
+}
+
+/*___________________________________________________*/
+/* tabla que esta dentro de ventana modal 
+*/
+.tabla_con_estudiantes{
+  width: 100%; /* Ajusta la tabla al 100% del ancho del contenedor */
+}
+.celda_de_acceso{
+  border: #fefefe;
+}
+td {
+  border-right: 1px solid black;
+  /*border: 1px solid black; /* Agrega un borde de 1px a las celdas de datos */
+  padding: 2px; /* Añade un espacio interno para mejorar la apariencia */
+}
+/*________________________________________________*/
+/* estilo  Desplegar ventana */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-contenido {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.cerrar {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.cerrar:hover,
+.cerrar:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+  

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>proyecto secundario para hacer pruebas</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+
+<body>
+    <header class="cantidad_estudiantes">
+        <p id="texto">texto que cambiare luego</p>
+    </header>
+
+<!--__________________peticion al servidor_____________________________________-->
+<button id="obtener-datos">Obtener Datos</button>
+<div id="resultado"></div>
+
+<!--_____________________fin de la peticion__________________________________-->
+<!--___________________________________________________________________________ -->
+<!--________________tablas de despliegue de datos____________________________________ -->
+<div class="contenedor-flexible">
+    <!-- Botón que muestra/oculta la tabla 1 (F1 y D1) -->
+    <div class="div">
+      <button class="BTN_acceso" id="botonTabla1">Mostrar Tabla 1</button>
+      <!-- Tabla 1 (oculta inicialmente) -->
+      <table class="tabla" id="tabla1">
+        <tr>
+          <td class="celda_de_acceso">
+            <button class="selec_edif" id="F1"> F1</button>
+            <div id="mi_f1" class="modal">
+              <div class="modal-contenido">
+                <span class="cerrar" id="cerrar_f1">&times;</span>
+                <table class="tabla_con_estudiantes">
+                    <thead>
+                      <tr>
+                        <th>#Cuenta</th>
+                        <th>Nombre</th>
+                        <th>Carrera</th>
+                        <th>Id</th>
+                        <th>Entrada</th>
+                        <th>Salida</th>
+                      </tr>
+                    </thead>
+                    <tbody id="mi_body_f1" class="body_f1">
+                        
+                    </tbody>
+                </table>
+              </div>
+            </div>
+          </td>
+        </tr>
+      <!-- Botón que muestra/oculta la tabla 2 (D1) -->
+          <td class="celda_de_acceso">
+            <button class="selec_edif" id="D1"> D1</button>
+            <div id="mi_d1" class="modal">
+              <div class="modal-contenido">
+                <span class="cerrar" id="cerrar_d1">&times;</span>
+                <!--                       -->
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="div">
+      <button class="BTN_acceso" id="botonTabla2">Mostrar Tabla 2</button>
+
+      <!-- Tabla 2 (oculta inicialmente) -->
+      <table class="tabla" id="tabla2">
+        <tr>
+          <td>
+            <button class="selec_entrada" id="entrada_principal">Entrada Principal </button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button class="selec_entrada" id="Puente_peatonal"> Peatonal </button>
+          </td>
+        </tr>
+      </table>
+    </div>
+    </div>
+
+    <!--
+       <button class="BTN_acceso cambio" > boton para cambiar</button>
+    <script>
+        // Llamada a la función que cambiará el texto al presionar el botón
+        document.querySelector('.cambio').addEventListener('click', function() {
+          modificarParrafo();
+        });
+      </script>
+    -->
+       
+
+<footer class="cambio_entorno">
+    <button class="BTN" id="btn_agregar">Agregar</button>
+    <button class="BTN" id="btn_eliminar">Eliminar</button>
+    <button class="BTN" id="btn_Reportar">Reportar</button>
+</footer>
+  
+<script src="../javascript/functions.js"></script>
+</body>
+
+</html>
+
