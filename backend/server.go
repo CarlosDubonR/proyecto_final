@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"time"
-	//"github.com/rs/cors"
+
+	"github.com/rs/cors"
 )
 
 // usado para dar la lista de los lugares donde estuvo
