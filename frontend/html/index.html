@@ -21,9 +21,51 @@
 <!--___________________________________________________________________________ -->
 <!--________________tablas de despliegue de datos____________________________________ -->
 <div class="contenedor-flexible">
+  <!-- Boton para desplegar modal y buscar estudiantes que no sabemos en que edificio estan-->  
+  <button class="BTN_acceso" id="Buscar">Buscar estudiante</button>
+  <div id="mi_busqueda" class="modal">
+    <div class="modal-contenido">
+      <span class="cerrar" id="cerrar_busqueda">&times;</span>
+      <!--         datos de nombre o Num de cuenta              -->
+      <div>
+        <label for="Ingrese_nombre_a_buscar: ">Nombre:</label>
+        <input type="text" id="nombre" name="nombre"><br>
+        <button class="btn_buscar" id="mi_busqueda_nombre">buscar</button>        
+      </div>
+      <div>
+        <label for="ingrese_#cuenta_a_buscar: ">ID:</label>
+        <input type="text" id="id" name="id"><br>
+        <button class="btn_buscar" id="mi_busqueda_id">buscar</button>
+      </div>
+      <div class="tabla_con_estudiantes" id="resultado_busquedas">
+        <table class="tabla_con_estudiantes" id="My_resultado_busqueda">
+          <thead>
+            <th>nombre</th>
+             <th># Cuenta</th>
+             <th>
+              <table class="tabla_con_estudiantes" id="Mis_rutas">
+                 <thead>
+                   <th>Edificio</th>
+                   <th>Entrada</th>
+                   <th>Salida</th>
+                 </thead>
+                  <!--"My_body_rutas" es para mostrar las rutas -->                  
+                  <tbody class="Body_rutas" id="My_body_rutas">
+                  </tbody>
+                </table>
+              </th>
+            </thead>
+            <tr>
+            </tr>
+
+          </table>
+        </div>
+    
+    </div>
+  </div>
     <!-- Botón que muestra/oculta la tabla 1 (F1 y D1) -->
     <div class="div">
-      <button class="BTN_acceso" id="botonTabla1">Mostrar Tabla 1</button>
+      <button class="BTN_acceso" id="botonTabla1"> EDIFICIOS </button>
       <!-- Tabla 1 (oculta inicialmente) -->
       <table class="tabla" id="tabla1">
         <tr>
@@ -31,6 +73,7 @@
             <button class="selec_edif" id="F1"> F1</button>
             <div id="mi_f1" class="modal">
               <div class="modal-contenido">
+                <button class="BTN" id="vista_individual">vista individual</button>
                 <span class="cerrar" id="cerrar_f1">&times;</span>
                 <table class="tabla_con_estudiantes">
                     <thead>

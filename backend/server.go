@@ -92,7 +92,7 @@ func buscarUID(w http.ResponseWriter, r *http.Request) {
 
 	// Obtener el ID que se desea buscar
 	idBuscado := data["id"]
-
+	ubicacion := data["edificio"]
 	// Realizar la búsqueda en el slice
 	encontrado := false
 	var datosEncontrados Data
@@ -101,13 +101,61 @@ func buscarUID(w http.ResponseWriter, r *http.Request) {
 			encontrado = true
 			datosEncontrados = dato
 			if !(datosEncontrados.Estado) {
+				fmt.Println("alumno entrando")
 				datosEncontrados.Entrada = time.Now()
+				datosEncontrados.Salida = time.Time{}
 				miSlice[i].Estado = true
-				datosEncontrados.Estado = true
+				datosEncontrados.Estado = miSlice[i].Estado
+				//busca si ya esta dentro de la U y luego actualiza los datos
+				//agrega solamente los datos de Ruta a MiSlice para hacer la busqueda general luego
+				elemento := false
+				for j, data := range dentroU {
+					fmt.Println("entro al for")
+					if idBuscado == data.Id {
+						elemento = true
+						fmt.Println("el alumno esta registrado en dentroU, actualizar datos de entrada")
+						dentroU[j].Entrada = datosEncontrados.Entrada
+						dentroU[j].Salida = datosEncontrados.Salida
+						dentroU[j].Estado = datosEncontrados.Estado
+						dentroU[j].Rutas = append(dentroU[j].Rutas, RutaAlumno{
+							Edificio: ubicacion,
+							Entro:    datosEncontrados.Entrada,
+							Salio:    datosEncontrados.Salida,
+						})
+						break
+					}
+				}
+				if !(elemento) {
+					fmt.Println("se agrego un nuevo elemento a la lista dentroU")
+					datosEncontrados.Rutas = append(datosEncontrados.Rutas, RutaAlumno{
+						Edificio: ubicacion,
+						Entro:    datosEncontrados.Entrada,
+						Salio:    datosEncontrados.Salida,
+					})
+					dentroU = append(dentroU, datosEncontrados)
+				}
+				//Acciones si el estudiante salio
 			} else {
 				datosEncontrados.Salida = time.Now()
 				miSlice[i].Estado = false
-				datosEncontrados.Estado = false
+				datosEncontrados.Estado = miSlice[i].Estado
+				fmt.Println("alumno saliendooooo")
+				datosEncontrados.Estado = miSlice[i].Estado
+				//busca si ya esta dentro de la U y luego actualiza los datos
+				//agrega solamente los datos de Ruta a MiSlice para hacer la busqueda general luego
+				//elemento := false
+				for j, data := range dentroU {
+					fmt.Println("entro al for para actualizar salidas")
+					if idBuscado == data.Id {
+
+						fmt.Println("el alumno esta registrado en dentroU, actualizar datos de salida")
+						dentroU[j].Salida = datosEncontrados.Salida
+						dentroU[j].Estado = datosEncontrados.Estado
+						longitud := len(dentroU[j].Rutas) - 1
+						dentroU[j].Rutas[longitud].Salio = datosEncontrados.Salida
+						break
+					}
+				}
 			}
 			fmt.Println("encontrado")
 			break
@@ -115,18 +163,9 @@ func buscarUID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Devolver la respuesta al cliente
+	//revisaremos si el dato esta en el arreglo
+	//Si esta entonces solo actualizar la hora nada mas
 	if encontrado {
-		if datosEncontrados.Estado {
-			dentroU = append(dentroU, datosEncontrados)
-		} else {
-			for i := len(dentroU) - 1; i >= 0; i-- {
-				if dentroU[i].Id == idBuscado {
-					dentroU[i].Salida = time.Now()
-					dentroU[i].Estado = false
-					break
-				}
-			}
-		}
 		fmt.Println("El ID se encuentra en el slice. Todo bien todo correcto")
 	} else {
 		fmt.Println("El ID no se encuentra en el slice. Mandar una alerta")
@@ -148,11 +187,7 @@ func main() {
 			Estado:  false,
 			Entrada: time.Time{},
 			Salida:  time.Time{},
-			Rutas: []RutaAlumno{
-				{Edificio: "C1", Entro: time.Time{}, Salio: time.Time{}},
-				{Edificio: "D1", Entro: time.Time{}, Salio: time.Time{}},
-				{Edificio: "C1", Entro: time.Time{}, Salio: time.Time{}},
-			},
+			Rutas:   []RutaAlumno{},
 		},
 		{Num_cuenta: 201810321289,
 			Name: "María", Id: "otro string",

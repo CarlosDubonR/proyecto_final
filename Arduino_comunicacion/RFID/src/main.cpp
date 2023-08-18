@@ -44,39 +44,32 @@
 MFRC522 mfrc522(SS_PIN, RST_PIN);  // Create MFRC522 instance
 
 byte LecturaUID[4];
-byte Usuario1[4]={0xE9, 0xAA, 0x60, 0xA3};//llavero, esto lo hago solo para pruebas antes de tener mi base de datos
+//byte Usuario1[4]={0xE9, 0xAA, 0x60, 0xA3};//llavero, esto lo hago solo para pruebas antes de tener mi base de datos
 
 void setup() {
 	Serial.begin(9600);		// Initialize serial communications with the PC
-
 	SPI.begin();			// Init SPI bus
 	mfrc522.PCD_Init();		// Init MFRC522
 	Serial.println("listo, arranca codigo: ");
 }
 
 void loop() {
-	// Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
-	if ( ! mfrc522.PICC_IsNewCardPresent()) 
-		return;
-
-	// Select one of the cards
-	if ( ! mfrc522.PICC_ReadCardSerial()) 
-		return;
-
-  for(byte i=0; i< mfrc522.uid.size; i++){
+	// Restablezca el bucle si no hay ninguna tarjeta nueva presente en el sensor/lector. 
+	//Esto guarda todo el proceso cuando está inactivo.
+	if (mfrc522.PICC_IsNewCardPresent()&&mfrc522.PICC_ReadCardSerial()) {
+    for(byte i=0; i< mfrc522.uid.size; i++){
     if(mfrc522.uid.uidByte[i] < 0x10){
       Serial.print(" 0");
       }else{
         Serial.print("");
         }
-        Serial.print(mfrc522.uid.uidByte[i],HEX);        
+        Serial.print(mfrc522.uid.uidByte[i],HEX);
     }
-    Serial.print("\n");
-
-    /*if(CompararUID(LecturaUID, Usuario1))
-      Serial.println("Bienvenido usuario 1 .");
-    else
-      Serial.println("No te conozco XD");
-*/
-    mfrc522.PICC_HaltA();//finaliza la comunicacion
-        }
+      Serial.print(",F1"",\n");
+    mfrc522.PICC_HaltA();//finaliza la comunicacion con el sensor del f1
+	}
+ 
+	/*// Seleccione una de las tarjetas
+	if (  mfrc522.PICC_ReadCardSerial()) 
+		return;*/      
+		}

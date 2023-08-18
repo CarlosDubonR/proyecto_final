@@ -78,6 +78,27 @@ function modificarParrafo() {
   document.getElementById("cerrar_d1").addEventListener('click', ()=>{
     document.getElementById("mi_d1").style.display = "none";
   })
+  //                       Busqueda
+  document.getElementById("Buscar").addEventListener('click',()=>{
+    document.getElementById("mi_busqueda").style.display = "block";
+  })
+  document.getElementById("cerrar_busqueda").addEventListener('click', ()=>{
+    document.getElementById("mi_busqueda").style.display = "none";
+  })
+//--------------------------------------------------
+//                        desplegar datos buscados
+let input_elemento = document.getElementById("nombre");
+let boton = document.getElementById("mi_busqueda_nombre");
+boton.addEventListener('click',()=>{
+  var data = input_elemento.value;
+  fetch('http://localhost:8080/Buscar', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+})
 
 //-------------------------------------------------
 //para hacer peticion al servidor
