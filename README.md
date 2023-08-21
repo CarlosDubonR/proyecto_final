@@ -15,7 +15,7 @@ el funcionamiento se basa en una antena emisora de señal en cada portal de acce
 - [Contribución](#contribución)
 - [Licencia](#licencia)
 
-## Instalación
+## Instalación 
 La instalacion se divide en 3 pasos:
   1. instalar un gestor de codigo c++ para arduino (PlatformIo)
   2. descargar Node.js usando npm
