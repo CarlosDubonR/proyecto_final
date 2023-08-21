@@ -12,5 +12,6 @@ el funcionamiento se basa en una antena emisora de señal en cada portal de acce
 
 - [Instalación](#instalación)
 - [Uso](#uso)
+- 
 - [Contribución](#contribución)
 - [Licencia](#licencia)
