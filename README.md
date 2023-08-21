@@ -22,5 +22,6 @@ La instalacion se divide en 3 pasos:
   3. seleccionar el paqueten donde estara su proyecto y asignarle la libreria #include <MFRC522.h>
 
 **instalacion de gestor:**
+
 en el buscador de visualstudio buscar platformio y descargarlo, la instalacion correcta no anexara un simbolo de ![image](https://github.com/CarlosDubonR/proyecto_final/assets/134743314/d09b5521-8553-433a-958d-35601ac8a5ac) que nos haran poder compilar y subir el codigo a nuestra placa arduino
 
