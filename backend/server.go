@@ -34,8 +34,10 @@ var miSlice []Data
 // una base de datos donde solo estan los que entran a la U
 var dentroU []Data
 
+// ------------------------------------------------------------------------
 // mostrar los datos de alumnos dentro de la U (GET)
 // vamos almacenando las personas que estan dentro de la UNAH
+// especificamente simulamos los que estan dentro del F1
 func handleAcceso(w http.ResponseWriter, r *http.Request) {
 	// Configurar la cabecera para indicar que la respuesta será JSON
 	w.Header().Set("Content-Type", "application/json")
@@ -50,6 +52,7 @@ func handleAcceso(w http.ResponseWriter, r *http.Request) {
 	w.Write(DentroUNAH)
 }
 
+// ------------------------------------------------------------------------
 // Manejo de la base de datos dentro del servidor (GET)
 // es una base de datos de las personas que tienen acceso para entrar
 func handleData(w http.ResponseWriter, r *http.Request) {
@@ -66,7 +69,10 @@ func handleData(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
+// ------------------------------------------------------------------------
 // Manejador para la ruta /add (POST)
+// mediante un formulario ingresamos los datos relevante y obligatorios
+// para almacenar alumnos en el slice que nos sirve de base de datos
 func handleAddData(w http.ResponseWriter, r *http.Request) {
 	// Decodificar el JSON recibido en la solicitud
 	var newData Data
@@ -74,14 +80,13 @@ func handleAddData(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error al decodificar JSON", http.StatusBadRequest)
 		return
 	}
-
 	// Agregar el nuevo dato al slice utilizando append
 	miSlice = append(miSlice, newData)
-
-	// Enviar una respuesta de éxito
 }
 
+// ------------------------------------------------------------------------
 // maneja la comprobacion de si es o no es un alumno (POST)
+// cuando accede almacena la fecha y hora de acceso junto con el lugar que accedio
 func buscarUID(w http.ResponseWriter, r *http.Request) {
 	// Decodificar el JSON recibido en la solicitud
 	var data map[string]string
@@ -101,7 +106,7 @@ func buscarUID(w http.ResponseWriter, r *http.Request) {
 			encontrado = true
 			datosEncontrados = dato
 			if !(datosEncontrados.Estado) {
-				fmt.Println("alumno entrando")
+				//	fmt.Println("alumno entrando")
 				datosEncontrados.Entrada = time.Now()
 				datosEncontrados.Salida = time.Time{}
 				miSlice[i].Estado = true
@@ -110,10 +115,10 @@ func buscarUID(w http.ResponseWriter, r *http.Request) {
 				//agrega solamente los datos de Ruta a MiSlice para hacer la busqueda general luego
 				elemento := false
 				for j, data := range dentroU {
-					fmt.Println("entro al for")
+					//		fmt.Println("entro al for")
 					if idBuscado == data.Id {
 						elemento = true
-						fmt.Println("el alumno esta registrado en dentroU, actualizar datos de entrada")
+						//			fmt.Println("el alumno esta registrado en dentroU, actualizar datos de entrada")
 						dentroU[j].Entrada = datosEncontrados.Entrada
 						dentroU[j].Salida = datosEncontrados.Salida
 						dentroU[j].Estado = datosEncontrados.Estado
@@ -122,12 +127,22 @@ func buscarUID(w http.ResponseWriter, r *http.Request) {
 							Entro:    datosEncontrados.Entrada,
 							Salio:    datosEncontrados.Salida,
 						})
+						miSlice[i].Rutas = append(miSlice[i].Rutas, RutaAlumno{
+							Edificio: ubicacion,
+							Entro:    datosEncontrados.Entrada,
+							Salio:    datosEncontrados.Salida,
+						})
 						break
 					}
 				}
 				if !(elemento) {
-					fmt.Println("se agrego un nuevo elemento a la lista dentroU")
+					//		fmt.Println("se agrego un nuevo elemento a la lista dentroU")
 					datosEncontrados.Rutas = append(datosEncontrados.Rutas, RutaAlumno{
+						Edificio: ubicacion,
+						Entro:    datosEncontrados.Entrada,
+						Salio:    datosEncontrados.Salida,
+					})
+					miSlice[i].Rutas = append(miSlice[i].Rutas, RutaAlumno{
 						Edificio: ubicacion,
 						Entro:    datosEncontrados.Entrada,
 						Salio:    datosEncontrados.Salida,
@@ -145,19 +160,20 @@ func buscarUID(w http.ResponseWriter, r *http.Request) {
 				//agrega solamente los datos de Ruta a MiSlice para hacer la busqueda general luego
 				//elemento := false
 				for j, data := range dentroU {
-					fmt.Println("entro al for para actualizar salidas")
+					//fmt.Println("entro al for para actualizar salidas")
 					if idBuscado == data.Id {
-
-						fmt.Println("el alumno esta registrado en dentroU, actualizar datos de salida")
+						//	fmt.Println("el alumno esta registrado en dentroU, actualizar datos de salida")
 						dentroU[j].Salida = datosEncontrados.Salida
 						dentroU[j].Estado = datosEncontrados.Estado
 						longitud := len(dentroU[j].Rutas) - 1
+						long := len(miSlice[i].Rutas) - 1
 						dentroU[j].Rutas[longitud].Salio = datosEncontrados.Salida
+						miSlice[i].Rutas[long].Salio = datosEncontrados.Salida
 						break
 					}
 				}
 			}
-			fmt.Println("encontrado")
+			//fmt.Println("encontrado")
 			break
 		}
 	}
@@ -172,12 +188,42 @@ func buscarUID(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// ------------------------------------------------------------------------
+// revisamos en la Base de datos y retornamos todos los valores con este nombre
+// mostrando a su vez los datos relevantes junto con los lugares donde estuvo
+func Buscar_Por_Nombre(w http.ResponseWriter, r *http.Request) {
+	// 1. decodificar el json  2.)recorrer miSlice  3.)almacenar datos en un nuevo slice  4.)retornar el slice con los datos encontrados
+	var newData Data
+	if err := json.NewDecoder(r.Body).Decode(&newData); err != nil {
+		http.Error(w, "Error al decodificar JSON", http.StatusBadRequest)
+		return
+	}
+	var resultados []Data
+	for _, data := range miSlice {
+		if data.Name == newData.Name {
+			resultados = append(resultados, data)
+		}
+	}
+	/*fmt.Println(newData.Name)
+	fmt.Println(resultados)*/
+	// Convertir los resultados a JSON y escribirlos en la respuesta
+	jsonData, err := json.Marshal(resultados)
+	if err != nil {
+		http.Error(w, "Error al convertir a JSON", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonData)
+}
+
+// ______________________________FUNCION PRINCIPAL_________________________________________________________
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/data", handleData) //muestra la mini base de datos
 	mux.HandleFunc("/Acceso", handleAcceso)
 	mux.HandleFunc("/add", handleAddData)
 	mux.HandleFunc("/procesar", buscarUID)
+	mux.HandleFunc("/BuscarNombre", Buscar_Por_Nombre)
 	//inicializamos la base de datos con algunos datos en ella y asumimos que antes de iniciar todos estan fuera
 	miSlice = []Data{
 		{Num_cuenta: 201810321267,

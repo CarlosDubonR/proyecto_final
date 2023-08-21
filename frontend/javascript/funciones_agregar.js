@@ -6,11 +6,11 @@ volver_home.addEventListener('click', function(){
 //-----------------funcion que envia datos al servidor para almacenarlos en la base de datos-----------
 enviar.addEventListener('click', () => {
     const formData = new FormData(formulario);
-
+    const num_cuenta = parseInt(formData.get('num_cuenta'))
     const data = {
         Name: formData.get('nombre'),   
         ID: formData.get('id'),         
-        Num_cuenta: formData.get(num_cuenta),
+        Num_cuenta: num_cuenta,
         Carrera: formData.get('carrera')
     };
 

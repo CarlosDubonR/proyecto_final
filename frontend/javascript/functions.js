@@ -52,8 +52,14 @@ function modificarParrafo() {
           celdaNombre.textContent = data.name;
           celdaId.textContent = data.id;
           celdaCarrera.textContent = data.carrera;
-          celdaEntrada.textContent = data.entrada;
-          celdaSalida.textContent = data.salida
+          const fechaEntrada = new Date(data.entrada)
+          const HoraEntrada = `${fechaEntrada.getHours()}:${fechaEntrada.getMinutes()}:${fechaEntrada.getSeconds()}`
+          celdaEntrada.textContent = HoraEntrada;
+          if (data.salida !== "0001-01-01T00:00:00Z") {
+            const fechaSalio = new Date(data.salida);
+            const horaSalio = `${fechaSalio.getHours()}:${fechaSalio.getMinutes()}:${fechaSalio.getSeconds()}`;
+            celdaSalida.textContent = horaSalio;
+          }
           fila.appendChild(celdaNum_Cuenta);
           fila.appendChild(celdaNombre);
           fila.appendChild(celdaCarrera);
@@ -87,18 +93,85 @@ function modificarParrafo() {
   })
 //--------------------------------------------------
 //                        desplegar datos buscados
+//--Busca en base a Nombre y manda los resultados con ese nombre nada mas junto con los lugares donde estuvieron
 let input_elemento = document.getElementById("nombre");
 let boton = document.getElementById("mi_busqueda_nombre");
 boton.addEventListener('click',()=>{
   var data = input_elemento.value;
-  fetch('http://localhost:8080/Buscar', {
+  const MyData ={
+    Name: data
+  }
+  fetch('http://localhost:8080/BuscarNombre', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(MyData)
   })
+  .then(response => response.json())
+  .then(resultados =>{
+    console.log(resultados)
+    const llenadoTabla = document.getElementById('my_resultado_busqueda') 
+    llenadoTabla.innerHTML='';
+    resultados.forEach(dato => {
+      const fila = CrearFila(dato);
+      llenadoTabla.appendChild(fila);
+  });
+  function CrearFila(data){
+    const fila = document.createElement('tr');
+    const celdaNombre = document.createElement('td');
+    const celdaCarrera = document.createElement('td');    
+    const celdaNum_Cuenta = document.createElement('td');
+    const celdaRutas= document.createElement('td');
+  
+    //que le lleguen todos los datos despues de recorrer el forEach
+    celdaNum_Cuenta.textContent = data.num_cuenta;
+    celdaNombre.textContent = data.name;
+    celdaCarrera.textContent = data.carrera;
+
+    const tablaRutas = document.createElement('table');
+    data.rutas.forEach(ruta => {
+      const filaRuta = CrearFila_Ruta(ruta);
+      tablaRutas.appendChild(filaRuta);
+    });
+    celdaRutas.appendChild(tablaRutas);
+
+    fila.appendChild(celdaNum_Cuenta);
+    fila.appendChild(celdaNombre);
+    fila.appendChild(celdaCarrera);
+    fila.appendChild(celdaRutas);
+    return fila;
+  }
+  function CrearFila_Ruta(datos) {
+    const fila = document.createElement('tr');
+    const celdaEdificio = document.createElement('td');
+    const celdaEntrada = document.createElement('td');
+    const celdaSalida = document.createElement('td');
+
+    celdaEdificio.textContent = datos.edificio;
+    const fechaEntro = new Date(datos.entro)
+    const horaEntrada = `${fechaEntro.getHours()}:${fechaEntro.getMinutes()}:${fechaEntro.getSeconds()}`;
+    celdaEntrada.textContent = horaEntrada;
+    if (datos.salio !== "0001-01-01T00:00:00Z") {
+      const fechaSalio = new Date(datos.salio);
+      const horaSalio = `${fechaSalio.getHours()}:${fechaSalio.getMinutes()}:${fechaSalio.getSeconds()}`;
+      celdaSalida.textContent = horaSalio;
+    }
+
+    fila.appendChild(celdaEdificio);
+    fila.appendChild(celdaEntrada);
+    fila.appendChild(celdaSalida);
+
+    return fila;
+  }
+   
+  })
+
+  .catch(error => {
+    resultado.innerHTML = 'Error al obtener los datos';
+});
 })
+//---------busca en base a #Cuenta y muestra los lugares donde estuvo ---------------------------
 
 //-------------------------------------------------
 //para hacer peticion al servidor
