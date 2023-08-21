@@ -16,11 +16,11 @@ el funcionamiento se basa en una antena emisora de señal en cada portal de acce
 - [Licencia](#licencia)
 
 ## Instalación
-La instalacion se divide en n pasos:
+La instalacion se divide en 3 pasos:
   1. instalar un gestor de codigo c++ para arduino (PlatformIo)
   2. descargar Node.js usando npm
   3. seleccionar el paqueten donde estara su proyecto y asignarle la libreria #include <MFRC522.h>
 
-instalacion de gestor:
+**instalacion de gestor:**
    en el buscador de visualstudio buscar platformio y descargarlo, la instalacion correcta no anexara un simbolo de ![image](https://github.com/CarlosDubonR/proyecto_final/assets/134743314/d09b5521-8553-433a-958d-35601ac8a5ac) que nos haran poder compilar y subir el codigo a nuestra placa arduino
 
