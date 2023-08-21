@@ -31,6 +31,7 @@ inicializamos un proyecto creando una carpeta especifica solo para este, nos ire
 **seleccionar el paquete MRFC22.h**
 en platformio seleccionamos la carpeta donde estara nuestro codigo c++ para arduino y buscamos esta libreria<MFRC522.h>, la descargamos y dejamos para uso dentro de esa carpeta.
 
-##USO
+## USO
+arrancamos el servidor y luego la aplicacion node.js con node app.js , no hacerlo a la inversa sino tendran errores, luego el sistema procede a mostrar en consola de visual las personas que entran y salen al mismo tiempo que se actualiza los datos en el servidor, dentro del sitio web se podran visualisar y gestionar de la manera que se deseen.
 
 
