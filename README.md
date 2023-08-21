@@ -8,3 +8,4 @@ con este proyecto busca como objetivos
 el funcionamiento se basa en una antena emisora de señal en cada portal de acceso, esta antena emite una señal de radio que al estar lo suficientemente cerca esta exita un receptor ubicado en cada tarjeta y llavero para saber su codigo unico, luego manda este codigo junto con la ubicacion de la lectura para ser procesado por el servidor que agrega la hora del evento y lo almacena en una base de datos interna.
 
 ## Tabla de Contenidos
+
