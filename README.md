@@ -26,8 +26,8 @@ La instalacion se divide en 3 pasos:
 en el buscador de visualstudio buscar platformio y descargarlo, la instalacion correcta no anexara un simbolo de ![image](https://github.com/CarlosDubonR/proyecto_final/assets/134743314/d09b5521-8553-433a-958d-35601ac8a5ac) que nos haran poder compilar y subir el codigo a nuestra placa arduino
 
 **Descargar Node.js**:
-inicializamos un proyecto creando una carpeta especifica solo para este y luego en terminar y usamos
-git init para inicializar un gestor de versiones.
-luego usamos npm init para decir que este proyecto va manejar dependencias y le asignamos el nombre de nuestro proyecto.
+inicializamos un proyecto creando una carpeta especifica solo para este, nos iremos al navegador y descargaremos la verison mas reciente a fecha de hoy (21/08/23) aceptamos los terminos y de preferencia escoger la carpeta de instalacion en la carpeta que creamos y luego todo lo dejamos por defecto.
 
+**seleccionar el paquete MRFC22.h**
+en platformio 
 
