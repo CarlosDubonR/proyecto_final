@@ -29,5 +29,8 @@ en el buscador de visualstudio buscar platformio y descargarlo, la instalacion c
 inicializamos un proyecto creando una carpeta especifica solo para este, nos iremos al navegador y descargaremos la verison mas reciente a fecha de hoy (21/08/23) aceptamos los terminos y de preferencia escoger la carpeta de instalacion en la carpeta que creamos y luego todo lo dejamos por defecto.
 
 **seleccionar el paquete MRFC22.h**
-en platformio 
+en platformio seleccionamos la carpeta donde estara nuestro codigo c++ para arduino y buscamos esta libreria<MFRC522.h>, la descargamos y dejamos para uso dentro de esa carpeta.
+
+##USO
+
 
