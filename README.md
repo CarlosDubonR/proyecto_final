@@ -14,3 +14,11 @@ el funcionamiento se basa en una antena emisora de señal en cada portal de acce
 - [Uso](#uso)
 - [Contribución](#contribución)
 - [Licencia](#licencia)
+
+## Instalación
+La instalacion se divide en n pasos:
+  1. instalar un gestor de codigo c++ para arduino (PlatforIo)
+  2. descargar Node.js usando npm
+  3. seleccionar el paqueten donde estara su proyecto y asignarle la libreria #include <MFRC522.h>
+
+primero que nada deberian descargar PLATFORMIO en si visualstudio
