@@ -172,27 +172,82 @@ boton.addEventListener('click',()=>{
 });
 })
 //---------busca en base a #Cuenta y muestra los lugares donde estuvo ---------------------------
+let input_Id = document.getElementById("id");
+let btn_buscar_id = document.getElementById("mi_busqueda_id");
+btn_buscar_id.addEventListener('click',()=>{
+  var data_id = parseInt(input_Id.value);
+  const MyData ={
+    Num_cuenta: data_id
+  }
+  fetch('http://localhost:8080/BuscarId', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(MyData)
+  })
+  .then(respuesta_cuenta => respuesta_cuenta.json())
+  .then(resultados =>{
+    console.log(resultados)
+    const llenadoTabla = document.getElementById('my_resultado_busqueda') 
+    llenadoTabla.innerHTML='';
+    resultados.forEach(dato => {
+      const fila = CrearFila(dato);
+      llenadoTabla.appendChild(fila);
+  });
+  function CrearFila(data){
+    const fila = document.createElement('tr');
+    const celdaNombre = document.createElement('td');
+    const celdaCarrera = document.createElement('td');    
+    const celdaNum_Cuenta = document.createElement('td');
+    const celdaRutas= document.createElement('td');
+  
+    //que le lleguen todos los datos despues de recorrer el forEach
+    celdaNum_Cuenta.textContent = data.num_cuenta;
+    celdaNombre.textContent = data.name;
+    celdaCarrera.textContent = data.carrera;
 
-//-------------------------------------------------
-//para hacer peticion al servidor
-const obtenerDatos = document.getElementById('obtener-datos');
-const resultado = document.getElementById('resultado');
+    const tablaRutas = document.createElement('table');
+    data.rutas.forEach(ruta => {
+      const filaRuta = CrearFila_Ruta(ruta);
+      tablaRutas.appendChild(filaRuta);
+    });
+    celdaRutas.appendChild(tablaRutas);
 
-obtenerDatos.addEventListener('click', () => {
-  fetch('http://localhost:8080/data') 
-      .then(response => response.json()) // Parsea la respuesta como JSON
-      .then(data => {
-          let contenido = '';
-          data.forEach(item => {
-              contenido += `#Cuenta: ${item.num_cuenta} ,Nombre: ${item.name}, Id: ${item.id}, Carrera: ${item.carrera}<br>`;
-          });
-          resultado.innerHTML = contenido;
-      })
-      .catch(error => {
-          resultado.innerHTML = 'Error al obtener los datos';
-      });
+    fila.appendChild(celdaNum_Cuenta);
+    fila.appendChild(celdaNombre);
+    fila.appendChild(celdaCarrera);
+    fila.appendChild(celdaRutas);
+    return fila;
+  }
+  function CrearFila_Ruta(datos) {
+    const fila = document.createElement('tr');
+    const celdaEdificio = document.createElement('td');
+    const celdaEntrada = document.createElement('td');
+    const celdaSalida = document.createElement('td');
+
+    celdaEdificio.textContent = datos.edificio;
+    const fechaEntro = new Date(datos.entro)
+    const horaEntrada = `${fechaEntro.getHours()}:${fechaEntro.getMinutes()}:${fechaEntro.getSeconds()}`;
+    celdaEntrada.textContent = horaEntrada;
+    if (datos.salio !== "0001-01-01T00:00:00Z") {
+      const fechaSalio = new Date(datos.salio);
+      const horaSalio = `${fechaSalio.getHours()}:${fechaSalio.getMinutes()}:${fechaSalio.getSeconds()}`;
+      celdaSalida.textContent = horaSalio;
+    }
+
+    fila.appendChild(celdaEdificio);
+    fila.appendChild(celdaEntrada);
+    fila.appendChild(celdaSalida);
+
+    return fila;
+  }
+   })
+   .catch(error => {
+    resultado.innerHTML = 'Error al obtener los datos';
 });
-
+ })
+//-------------------------------------------------
   //________________________________________________
   // para cambiar entre paginas de html agregar, eliminar , reportar
 const cambiar = document.getElementById('btn_agregar')

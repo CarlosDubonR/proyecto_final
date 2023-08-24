@@ -4,6 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
+
+	//"strconv"
+	"strings"
 	"time"
 
 	"github.com/rs/cors"
@@ -199,15 +203,52 @@ func Buscar_Por_Nombre(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var resultados []Data
-	for _, data := range miSlice {
-		if data.Name == newData.Name {
-			resultados = append(resultados, data)
+	NewDataNameMinuscula := strings.ToLower(newData.Name)
+	if NewDataNameMinuscula != "" {
+		for _, data := range miSlice {
+			DataNameMinuscula := strings.ToLower(data.Name)
+			if strings.Contains(DataNameMinuscula, NewDataNameMinuscula) {
+				resultados = append(resultados, data)
+			}
 		}
 	}
-	/*fmt.Println(newData.Name)
-	fmt.Println(resultados)*/
-	// Convertir los resultados a JSON y escribirlos en la respuesta
+
 	jsonData, err := json.Marshal(resultados)
+	if err != nil {
+		http.Error(w, "Error al convertir a JSON", http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonData)
+}
+
+// ------------------------------------------------------------------------
+// revisa en la base de datos general quienes tienen estos id o parte de estos
+// por ejemplo si quiero saber los estudiantes que son del 2018 o 2020 podria saberlo solo ingresando el valor
+// lo ideal es poner el id completo para que el resultado sea especifico pero tambien se puede hacer mas amplio
+func Buscar_Por_Id(w http.ResponseWriter, r *http.Request) {
+	var newData Data
+	if err := json.NewDecoder(r.Body).Decode(&newData); err != nil {
+		http.Error(w, "Error al decodificar JSON", http.StatusBadRequest)
+		return
+	}
+	// Validar si newData.Num_cuenta es numérico
+	Num_strin := strconv.Itoa(newData.Num_cuenta)
+	if _, err := strconv.Atoi(Num_strin); err != nil {
+		fmt.Println("no es numerico")
+		http.Error(w, "El valor de Num_cuenta no es un número válido", http.StatusBadRequest)
+		return
+	}
+	// newData.Id es un número
+	var resultados_cuenta []Data
+
+	for _, data := range miSlice {
+		data_string := strconv.Itoa(data.Num_cuenta)
+		if strings.HasPrefix(data_string, Num_strin) {
+			resultados_cuenta = append(resultados_cuenta, data)
+		}
+	}
+	jsonData, err := json.Marshal(resultados_cuenta)
 	if err != nil {
 		http.Error(w, "Error al convertir a JSON", http.StatusInternalServerError)
 		return
@@ -224,6 +265,7 @@ func main() {
 	mux.HandleFunc("/add", handleAddData)
 	mux.HandleFunc("/procesar", buscarUID)
 	mux.HandleFunc("/BuscarNombre", Buscar_Por_Nombre)
+	mux.HandleFunc("/BuscarId", Buscar_Por_Id)
 	//inicializamos la base de datos con algunos datos en ella y asumimos que antes de iniciar todos estan fuera
 	miSlice = []Data{
 		{Num_cuenta: 201810321267,
